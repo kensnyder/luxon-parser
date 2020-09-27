@@ -1,72 +1,110 @@
 const { Info, FixedOffsetZone } = require('luxon');
 const twoDigitYears = require('../data/twoDigitYears.js');
 const timezoneNames = require('../data/timezoneNames.js');
+const numberingSystems = require('../data/numberingSystems.js');
 
 const cache = {};
+const baseVars = {
+	// Renamed from TZABBR
+	ZONE: Object.keys(timezoneNames).join('|'),
+	UNIT: 'year|month|week|day|hour|minute|second|millisecond',
+	ORDINAL: 'st|nd|rd|th|\\.',
+};
+
+const latinNumberVars = {
+	YEAR: '[1-9]\\d{3}|\\d{2}',
+	MONTH: '1[0-2]|0?[1-9]',
+	MONTH2: '1[0-2]|0[1-9]',
+	DAY: '3[01]|[12]\\d|0?[1-9]',
+	DAY2: '3[01]|[12]\\d|0[1-9]',
+	// Renamed from TIMEZONE
+	OFFSET: '[+-][01]?\\d\\:?[0-5]\\d',
+	H24: '[01]\\d|2[0-3]',
+	H12: '0?[1-9]|1[012]',
+	MIN: '[0-5]\\d',
+	SEC: '[0-5]\\d|60',
+	MS: '\\d{3,9}',
+};
+
+const otherNumberVars = {
+	YEAR: '*{3}|*{2}',
+	MONTH: '*{1,2}',
+	MONTH2: '*{2}',
+	DAY: '*{1,2}',
+	DAY2: '*{2}',
+	// Renamed from TIMEZONE
+	OFFSET: '[+-]*{1,2}\\:?*{2}',
+	H24: '*{2}',
+	H12: '*{1,2}',
+	MIN: '*{2}',
+	SEC: '*{2}',
+	MS: '*{3,9}',
+};
+
+// digitRegex({ numberingSystem });
 
 class LocalizedTemplate {
 	static factory(locale) {
-		if (!cache[locale]) {
-			cache[locale] = new LocalizedTemplate(locale);
+		if (!cache[locale.toLowerCase()]) {
+			cache[locale.toLowerCase()] = new LocalizedTemplate(locale);
 		}
-		return cache[locale];
+		return cache[locale.toLowerCase()];
 	}
 	constructor(locale) {
 		this.locale = locale;
-		this.setup();
+		const numberingSystem = new Intl.DateTimeFormat(locale).resolvedOptions()
+			.numberingSystem;
+		this.digitRegex = numberingSystems[numberingSystem];
+		this.build();
 	}
-	setup() {
-		let meridiems;
-		if (/^en/.test(this.locale)) {
-			meridiems = '[ap]\\.?m?\\.?';
+	build() {
+		this.vars = { ...baseVars };
+		if (this.digitRegex) {
+			Object.keys(otherNumberVars).forEach(key => {
+				this.vars[key] = otherNumberVars[key].replace(/\*/g, this.digitRegex);
+			});
 		} else {
-			meridiems = Info.meridiems(this.locale).join('|');
+			Object.assign(this.vars, latinNumberVars);
+		}
+		if (/^en/i.test(this.locale)) {
+			this.vars.AMPM = '[ap]\\.?m?\\.?';
+		} else {
+			this.vars.AMPM = Info.meridiems(this.locale).join('|');
 		}
 		this.lookups = {
 			year: twoDigitYears,
-			month: this.createLookup('months', ['long', 'short']),
-			dayname: this.createLookup('weekdays', ['long', 'short']),
 			zone: timezoneNames,
 		};
-		this.data = {
-			YEAR: '[1-9]\\d{3}|\\d{2}',
-			MONTH: '1[0-2]|0?[1-9]',
-			MONTH2: '1[0-2]|0[1-9]',
-			MONTHNAME: Object.keys(this.lookups.month).join('|'),
-			DAYNAME: Object.keys(this.lookups.dayname).join('|'),
-			DAY: '3[01]|[12]\\d|0?[1-9]',
-			DAY2: '3[01]|[12]\\d|0[1-9]',
-			// Renamed from TIMEZONE
-			OFFSET: '[+-][01]\\d\\:?[0-5]\\d',
-			// Renamed from TZABBR
-			ZONE: Object.keys(this.lookups.zone).join('|'),
-			H24: '[01]\\d|2[0-3]',
-			H12: '0?[1-9]|1[012]',
-			AMPM: meridiems,
-			MIN: '[0-5]\\d',
-			SEC: '[0-5]\\d',
-			MS: '\\d{3,}',
-			UNIT: 'year|month|week|day|hour|minute|second|millisecond',
-			ORDINAL: 'st|nd|rd|th|\\.',
-		};
-		console.log(this.data);
+		this.loadList('months');
+		this.loadList('weekdays');
+		// console.log('this.vars', this.vars);
 	}
-	createLookup(method, variants) {
+	loadList(method) {
+		const list = {};
 		const lookup = {};
-		variants.forEach(variant => {
-			// if (this.locale !== 'en-US') {
-			// 	console.log(
-			// 		'Info for ' + this.locale,
-			// 		Info[method](variant, { locale: this.locale })
-			// 	);
-			// }
-			Info[method](variant, { locale: this.locale }).forEach((unit, i) => {
+		['long', 'short'].forEach(variant => {
+			const units = [
+				...Info[method](variant, { locale: this.locale }),
+				...Info[method + 'Format'](variant, { locale: this.locale }),
+			];
+			units.forEach((unit, i) => {
 				unit = unit.toLowerCase();
 				unit = unit.replace(/\.$/, '');
-				lookup[unit] = method === 'months' ? i + 1 : i;
+				lookup[unit] = (i % 12) + (method === 'months' ? 1 : 0);
+				if (variant === 'short') {
+					unit = unit + '\\.?';
+				}
+				list[unit] = true;
 			});
 		});
-		return lookup;
+		if (method === 'months') {
+			this.lookups.month = lookup;
+			// console.log('======= this.lookups.month', lookup);
+			this.vars.MONTHNAME = Object.keys(list).join('|');
+		} else {
+			this.lookups.dayname = lookup;
+			this.vars.DAYNAME = Object.keys(list).join('|');
+		}
 	}
 	getObject(units, matches) {
 		const object = {};
@@ -74,7 +112,9 @@ class LocalizedTemplate {
 			if (!unit) {
 				return;
 			}
-			const match = matches[i + 1].toLowerCase();
+			let match = matches[i + 1];
+			match = match.toLowerCase();
+			match = match.replace(/\.$/, '');
 			if (this.lookups[unit]) {
 				object[unit] = this.lookups[unit][match] || Number(match);
 				if (unit === 'zone') {
@@ -88,11 +128,12 @@ class LocalizedTemplate {
 	}
 	compile(template) {
 		const regexString = template.replace(/_([A-Z]+)_/g, ($0, $1) => {
-			if (!this.data[$1]) {
+			if (!this.vars[$1]) {
 				throw new Error(`Template string contains invalid variable _${$1}_`);
 			}
-			return this.data[$1];
+			return this.vars[$1];
 		});
+		//console.log({ regexString });
 		return new RegExp(regexString, 'i');
 	}
 }

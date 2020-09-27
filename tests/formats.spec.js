@@ -1,93 +1,103 @@
 const { DateTime, Info } = require('luxon');
 require('../src/index.js');
+const localeList = require('../src/data/localeList.js');
+// const localeList = ['en-US', 'ar-SA'];
 
-function testDates({ expected, format, locale, dates }) {
-	for (const date of dates) {
-		it(date, () => {
-			const actualString = DateTime.fromAny(date, { locale }).toFormat(format);
-			const expectedString = DateTime.fromISO(expected).toFormat(format);
-			expect(actualString).toBe(expectedString);
+const noon = { hour: 12, minute: 0, second: 0, millisecond: 0 };
+function testDates({ name, formats, expected, locales }) {
+	for (const locale of locales || localeList) {
+		describe(`${name} (${locale})`, () => {
+			for (const format of formats) {
+				const expectedDate = DateTime.fromObject({
+					...noon,
+					...expected,
+					locale,
+				});
+				const formatted = expectedDate.toFormat(format);
+				it(`${formatted} (${format})`, () => {
+					const parsedDate = DateTime.fromAny(formatted, { locale });
+					const actual = parsedDate.toObject();
+					expect(actual).toMatchObject(expected);
+				});
+			}
 		});
 	}
 }
+function xtestDates() {}
 
-// console.log('fr-FR', Info.months('long', { locale: 'fr-FR' }));
-// console.log('Info.features()', Info.features());
-
-describe('monthname day year', () => {
-	testDates({
-		expected: '2016-03-24',
-		format: 'yyyy-MM-dd',
-		locale: 'en-US',
-		dates: [
-			'Sun. March 24th, 2016',
-			'Sun, March 24th, 2016',
-			'Sun, March 24th 2016',
-			'Sun, March 24, 2016',
-			'Sun, March 24 2016',
-			'Sun March 24 2016',
-			'March 24, 2016',
-			'March 24 2016',
-			'March 24 16',
-			'Mar. 24 16',
-			'Mar 24 16',
-		],
-	});
+testDates({
+	name: 'monthname day year',
+	expected: { year: 2016, month: 9, day: 24 },
+	formats: [
+		'cccc, MMMM dd yyyy',
+		'cccc, MMMM dd yyyy',
+		'cccc MMMM dd yyyy',
+		'ccc, MMMM dd yyyy',
+		'ccc MMMM dd yyyy',
+		'MMMM dd yyyy',
+		'MMM dd yyyy',
+		'MMM dd yy',
+	],
 });
 
-describe('month day year', () => {
-	testDates({
-		expected: '2016-03-24',
-		format: 'yyyy-MM-dd',
-		locale: 'en-US',
-		dates: [
-			'03/24/2016',
-			'03-24-2016',
-			'3/24/2016',
-			'3-24-2016',
-			'3/24/16',
-			'3-24-16',
-		],
-	});
+testDates({
+	name: 'month day year',
+	expected: { year: 2020, month: 3, day: 14 },
+	locales: ['en-US'],
+	formats: [
+		'MM/dd/yyyy',
+		'MM-dd-yyyy',
+		'M/dd/yyyy',
+		'M-dd-yyyy',
+		'MM/dd/yy',
+		'MM-dd-yy',
+	],
 });
-describe('day month year', () => {
-	testDates({
-		expected: '2016-03-24',
-		format: 'yyyy-MM-dd',
-		locale: 'en-US',
-		dates: ['24/03/2016', '24.03.2016', '24/3/2016', '24.3.2016'],
-	});
+
+testDates({
+	name: 'day month year',
+	expected: { year: 2020, month: 3, day: 3 },
+	locales: ['en-US'],
+	formats: [
+		'dd/MM/yyyy',
+		'dd.MM.yyyy',
+		'dd/M/yyyy',
+		'dd.M.yyyy',
+		'd/M/yyyy',
+		'd.M.yyyy',
+		'dd/MM/yy',
+		'dd.MM.yy',
+	],
 });
-describe('day monthname year', () => {
-	testDates({
-		expected: '2016-03-24',
-		format: 'yyyy-MM-dd',
-		locale: 'en-US',
-		dates: [
-			// test
-			'24 march 2016',
-		],
-	});
-	testDates({
-		expected: '2016-05-24',
-		format: 'yyyy-MM-dd',
-		locale: 'fr-FR',
-		dates: [
-			// test
-			'24 mai 2016',
-		],
-	});
+
+testDates({
+	name: 'day monthname year',
+	expected: { year: 2020, month: 3, day: 9 },
+	formats: [
+		'dd-LLLL-yyyy',
+		'dd LLLL yyyy',
+		'dd LLL yyyy',
+		'd LLLL yyyy',
+		'd LLL yyyy',
+		'dd LLLL yy',
+		'dd LLL yy',
+		'd LLLL yy',
+		'd LLL yy',
+	],
 });
-describe('@unix', () => {
-	testDates({
-		expected: '2020-09-26',
-		format: 'yyyy-MM-dd',
-		locale: 'en-US',
-		dates: [
-			// test
-			'@1601142916',
-		],
-	});
+
+testDates({
+	name: 'chinese',
+	expected: { year: 2020, month: 9, day: 26 },
+	locales: ['zh-CN'],
+	formats: ['yyyy年MM月dd日', 'yyyy年M月d日'],
+});
+
+testDates({
+	name: '@unix',
+	expected: { year: 2020, month: 9, day: 26 },
+	locales: ['en-US'],
+	formats: ['@X'],
 });
 
 // describe('test', () => {

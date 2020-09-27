@@ -1,4 +1,4 @@
-const { DateTime } = require('luxon');
+const { DateTime, Settings } = require('luxon');
 const Parser = require('./Parser/Parser.js');
 // const today = require('./formats/today.js');
 // const twitter = require('./formats/twitter.js');
@@ -6,9 +6,11 @@ const monthDayYear = require('./formats/monthDayYear.js');
 const dayMonthnameYear = require('./formats/dayMonthnameYear.js');
 const dayMonthYear = require('./formats/dayMonthYear.js');
 const monthnameDayYear = require('./formats/monthnameDayYear.js');
+const chinese = require('./formats/chinese.js');
 const atSeconds = require('./formats/atSeconds.js');
 // const timeAgo = require('./formats/timeAgo.js');
 const defaultLocale = require('./defaultLocale/defaultLocale.js');
+Settings.defaultLocale = defaultLocale;
 
 const parser = new Parser();
 parser
@@ -17,6 +19,7 @@ parser
 	.addFormat(dayMonthnameYear)
 	.addFormat(dayMonthYear)
 	.addFormat(monthnameDayYear)
+	.addFormat(chinese)
 	.addFormat(atSeconds);
 // .addFormat(twitter)
 // .addFormat(timeAgo);
