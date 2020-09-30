@@ -19,16 +19,29 @@ class Format {
 		this.handler = handler;
 		this.regexByLocale = {};
 	}
-	getMatches(string, locale) {
+	attempt(string, locale) {
+		const matches = this.getMatches(string, locale);
+		if (matches) {
+			const dt = this.toDateTime(matches, locale);
+			if (dt && dt.isValid) {
+				return dt;
+			}
+		}
+		return null;
+	}
+	getRegExp(locale = 'en-US') {
 		if (this.template) {
 			if (!this.regexByLocale[locale]) {
 				this.regexByLocale[locale] = LocalizedTemplate.factory(locale).compile(
 					this.template
 				);
 			}
-			return string.match(this.regexByLocale[locale]);
+			return this.regexByLocale[locale];
 		}
-		return string.match(this.regex);
+		return this.regex;
+	}
+	getMatches(string, locale) {
+		return string.match(this.getRegExp(locale));
 	}
 	toDateTime(matches, locale) {
 		if (this.units) {
