@@ -1,5 +1,6 @@
 const { DateTime, Settings } = require('luxon');
 const Parser = require('./Parser/Parser.js');
+const ago = require('./formats/ago.js');
 const atSeconds = require('./formats/atSeconds.js');
 const chinese = require('./formats/chinese.js');
 const dayMonth = require('./formats/dayMonth.js');
@@ -34,6 +35,7 @@ parser
 	.addFormat(chinese)
 	.addFormat(twitter)
 	.addFormat(today)
+	.addFormat(ago)
 	.addFormat(monthnameDay)
 	.addFormat(dayMonthname)
 	.addFormat(monthDay)
@@ -59,23 +61,6 @@ DateTime.fromAny = function fromAny(date, options = {}) {
 
 module.exports = parser;
 //
-
-// 	// date s
-// 	// date such as "Tue Jun 22 17:47:27 +0000 2010"
-// 	.addParser({
-// 		name: 'twitter',
-// 		//                             $1                   $2      $3         $4      $5          $6           $7
-// 		template:
-// 			'^(?:_DAYNAME_)\\.? (_MONTHNAME_)\\.?.? (_DAY_) (_H24_)?\\:(_MIN_)?(\\:_SEC_)? (_TIMEZONE_) (_YEAR_)$',
-// 		format: 'MMM DD HH mm ss ZZ YYYY',
-// 	})
-// 	.addParser({
-// 		name: 'ago',
-// 		template: '^([\\d.]+) (_UNIT_)s? ago$',
-// 		handler: function (match) {
-// 			return moment().subtract(parseFloat(match[1]), match[2]);
-// 		},
-// 	})
 // 	.addParser({
 // 		name: 'in',
 // 		template: '^in ([\\d.]+) (_UNIT_)s?$',

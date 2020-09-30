@@ -1,7 +1,7 @@
 const { DateTime } = require('luxon');
 const Format = require('../Format/Format.js');
 
-const atSeconds = new Format({
+const today = new Format({
 	regex: /^(today|now|tomorrow|yesterday)/i,
 	handler: function (match) {
 		switch (match[1].toLowerCase()) {
@@ -16,4 +16,4 @@ const atSeconds = new Format({
 	},
 });
 
-module.exports = atSeconds;
+module.exports = today;

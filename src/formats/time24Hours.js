@@ -27,7 +27,8 @@ const time24Hours = new Format({
 				zone = 'local';
 			}
 		} else if (offset) {
-			zone = FixedOffsetZone.instance(offset);
+			const tpl = LocalizedTemplate.factory(locale);
+			zone = tpl.offsetToZone(offset);
 		} else {
 			zone = 'local';
 		}

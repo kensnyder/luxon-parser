@@ -1,7 +1,7 @@
 {
 	"name": "luxon-parser",
 	"version": "0.1.0",
-	"description": "Add a DateTime.fromAny() function to Luxon that can parse a wide range of date formats including human-input dates",
+	"description": "Add DateTime.fromHuman() and DateTime.fromAny() functions to Luxon that can parse a wide range of date formats including human-input dates",
 	"tags": [
 		"luxon",
 		"date",
@@ -15,7 +15,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js",
-		"watch": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js --watch"
+		"watch": "node --icu-data-dir=node_modules/full-icu node_modules/jest/bin/jest.js --watch --silent"
 	},
 	"repository": {
 		"type": "git",

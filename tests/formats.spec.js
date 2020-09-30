@@ -1,7 +1,13 @@
 const { DateTime, FixedOffsetZone } = require('luxon');
 require('../src/index.js');
 const localeList = require('../src/data/localeList.js');
+const createJestMatcher = require('../src/createJestMatcher/createJestMatcher.js');
 // const localeList = ['en-US', 'ar-SA'];
+
+expect.extend({
+	toMatchDate: createJestMatcher('yyyy-MM-dd'),
+	toMatchDateTime: createJestMatcher('yyyy-MM-dd HH:mm:ssZZ'),
+});
 
 const now = DateTime.local();
 const noon = { hour: 12, minute: 0, second: 0, millisecond: 0 };
@@ -190,7 +196,7 @@ testDates({
 	formats: ['@X'],
 });
 
-fdescribe('twitter time', () => {
+describe('twitter time', () => {
 	it('should handle "Fri Apr 09 12:53:54 +0000 2010"', () => {
 		const actual = DateTime.fromAny('Fri Apr 09 12:53:54 +0000 2010');
 		const expected = DateTime.fromObject({
@@ -202,7 +208,7 @@ fdescribe('twitter time', () => {
 			year: 2010,
 			zone: 'utc',
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 	it('should handle "Fri Apr 09 12:53:54 -0130 2010"', () => {
 		const actual = DateTime.fromAny('Fri Apr 09 12:53:54 -0130 2010');
@@ -215,7 +221,35 @@ fdescribe('twitter time', () => {
 			year: 2010,
 			zone: FixedOffsetZone.instance(-90),
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
+	});
+});
+
+describe('(amount) (unit) ago', () => {
+	it('should handle "8 years ago"', () => {
+		const actual = DateTime.fromAny('8 years ago');
+		const expected = DateTime.local().minus({ years: 8 });
+		expect(actual).toMatchDateTime(expected);
+	});
+	it('should handle "12 days ago"', () => {
+		const actual = DateTime.fromAny('12 days ago');
+		const expected = DateTime.local().minus({ days: 12 });
+		expect(actual).toMatchDateTime(expected);
+	});
+	it('should handle "5 hours ago"', () => {
+		const actual = DateTime.fromAny('5 hours ago');
+		const expected = DateTime.local().minus({ hours: 5 });
+		expect(actual).toMatchDateTime(expected);
+	});
+	it('should handle "1 minute ago"', () => {
+		const actual = DateTime.fromAny('1 minute ago');
+		const expected = DateTime.local().minus({ minute: 1 });
+		expect(actual).toMatchDateTime(expected);
+	});
+	it('should handle "2 seconds ago"', () => {
+		const actual = DateTime.fromAny('2 seconds ago');
+		const expected = DateTime.local().minus({ second: 2 });
+		expect(actual).toMatchDateTime(expected);
 	});
 });
 
@@ -223,22 +257,22 @@ describe('now, today, yesterday and tomorrow', () => {
 	it('should handle "now"', () => {
 		const actual = DateTime.fromAny('now');
 		const expected = DateTime.local();
-		expect(actual.toISODate()).toBe(expected.toISODate());
+		expect(actual).toMatchDate(expected);
 	});
 	it('should handle "today"', () => {
 		const actual = DateTime.fromAny('today');
 		const expected = DateTime.local();
-		expect(actual.toISODate()).toBe(expected.toISODate());
+		expect(actual).toMatchDate(expected);
 	});
 	it('should handle "tomorrow"', () => {
 		const actual = DateTime.fromAny('tomorrow');
 		const expected = DateTime.local().plus({ days: 1 });
-		expect(actual.toISODate()).toBe(expected.toISODate());
+		expect(actual).toMatchDate(expected);
 	});
 	it('should handle "yesterday"', () => {
 		const actual = DateTime.fromAny('yesterday');
 		const expected = DateTime.local().minus({ days: 1 });
-		expect(actual.toISODate()).toBe(expected.toISODate());
+		expect(actual).toMatchDate(expected);
 	});
 });
 
@@ -251,7 +285,7 @@ describe('24h time', () => {
 			second: 0,
 			millisecond: 0,
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 	it('should handle "23:12:55"', () => {
 		const actual = DateTime.fromAny('23:12:55');
@@ -261,7 +295,7 @@ describe('24h time', () => {
 			second: 55,
 			millisecond: 0,
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 	it('should handle "23:12:55.089"', () => {
 		const actual = DateTime.fromAny('23:12:55.089');
@@ -271,7 +305,7 @@ describe('24h time', () => {
 			second: 55,
 			millisecond: 89,
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 	it('should handle "23:12:55.123456"', () => {
 		const actual = DateTime.fromAny('23:12:55.123456');
@@ -281,7 +315,7 @@ describe('24h time', () => {
 			second: 55,
 			millisecond: 123,
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 	it('should handle "23:12:55.123456789"', () => {
 		const actual = DateTime.fromAny('23:12:55.123456789');
@@ -291,7 +325,7 @@ describe('24h time', () => {
 			second: 55,
 			millisecond: 123,
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 });
 
@@ -304,7 +338,7 @@ describe('12 hour time', () => {
 			second: 0,
 			millisecond: 0,
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 	it('should handle "8:15pm"', () => {
 		const actual = DateTime.fromAny('8:15pm');
@@ -314,7 +348,7 @@ describe('12 hour time', () => {
 			second: 0,
 			millisecond: 0,
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 	it('should handle "8:15:59pm"', () => {
 		const actual = DateTime.fromAny('8:15:59pm');
@@ -324,6 +358,6 @@ describe('12 hour time', () => {
 			second: 59,
 			millisecond: 0,
 		});
-		expect(actual.toISO()).toBe(expected.toISO());
+		expect(actual).toMatchDateTime(expected);
 	});
 });
