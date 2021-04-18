@@ -1,8 +1,8 @@
 # luxon-parser
 
-[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=1.0.0)](https://npm.com/package/luxon-parse)
-[![Build Status](https://travis-ci.org/kensnyder/luxon-parser.svg?branch=master&v=1.0.0)](https://travis-ci.org/kensnyder/luxon-parse)
-[![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/master/graph/badge.svg?v=1.0.0)](https://codecov.io/gh/kensnyder/luxon-parse)
+[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=1.0.0)](https://npm.com/package/luxon-parser)
+[![Build Status](https://travis-ci.org/kensnyder/luxon-parser.svg?branch=master&v=1.0.0)](https://travis-ci.org/kensnyder/luxon-parser)
+[![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/master/graph/badge.svg?v=1.0.0)](https://codecov.io/gh/kensnyder/luxon-parser)
 [![ISC License](https://img.shields.io/npm/l/luxon-parser.svg?v=1.0.0)](https://opensource.org/licenses/ISC)
 
 A comprehensive and extensible date parsing plugin for
