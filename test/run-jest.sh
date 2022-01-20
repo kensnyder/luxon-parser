@@ -28,9 +28,11 @@ then
     echo "${GREEN}Attempting to globally install luxon with npm for unit tests...${WHITE}"
     echo "npm install -g luxon@1"
     npm install -g luxon@1
+    echo ""
   fi
   # make global luxon available to our specs
   export NODE_PATH=$modulesPath
+  echo "${GREEN}Testing code that connects luxon to any-date-parser...${WHITE}"
   # set timezone to UTC and run tests
   TZ=UTC npx jest "$@"
 else
