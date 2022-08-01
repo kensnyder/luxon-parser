@@ -1,9 +1,9 @@
 # luxon-parser
 
-[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=0.9.1)](https://npmjs.com/package/luxon-parser)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/kensnyder/luxon-parser?branch=master&svg=true&v=0.9.1)](https://ci.appveyor.com/project/kensnyder/luxon-parser/branch/master)
-[![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/master/graph/badge.svg?v=0.9.1)](https://codecov.io/gh/kensnyder/luxon-parser)
-[![ISC License](https://img.shields.io/npm/l/luxon-parser.svg?v=0.9.1)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=0.9.2)](https://npmjs.com/package/luxon-parser)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/kensnyder/luxon-parser?branch=master&svg=true&v=0.9.2)](https://ci.appveyor.com/project/kensnyder/luxon-parser/branch/master)
+[![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/master/graph/badge.svg?v=0.9.2)](https://codecov.io/gh/kensnyder/luxon-parser)
+[![ISC License](https://img.shields.io/npm/l/luxon-parser.svg?v=0.9.2)](https://opensource.org/licenses/ISC)
 
 A comprehensive and extensible date parsing plugin for
 [Luxon](https://moment.github.io/luxon/docs/). It allows passing a wide variety
