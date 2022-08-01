@@ -1,6 +1,6 @@
 {
 	"name": "luxon-parser",
-	"version": "0.9.2",
+	"version": "0.9.3",
 	"description": "Add DateTime.fromHuman() and DateTime.fromAny() functions to Luxon that can parse a wide range of date formats including human-input dates",
 	"keywords": [
 		"luxon",
