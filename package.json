@@ -32,7 +32,7 @@
 	},
 	"homepage": "https://github.com/kensnyder/luxon-parser#readme",
 	"dependencies": {
-		"any-date-parser": "1.5.1"
+		"any-date-parser": "1.5.3"
 	},
 	"peerDependencies": {
 		"luxon": "^1.26.0"
