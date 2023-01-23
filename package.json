@@ -35,7 +35,7 @@
 		"any-date-parser": "1.5.3"
 	},
 	"peerDependencies": {
-		"luxon": "^1.26.0"
+		"luxon": "^3.2.1"
 	},
 	"devDependencies": {
 		"eslint": "8.7.0",
