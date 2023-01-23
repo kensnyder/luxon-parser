@@ -1,9 +1,9 @@
 # luxon-parser
 
-[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=0.9.3)](https://npmjs.com/package/luxon-parser)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/kensnyder/luxon-parser?branch=master&svg=true&v=0.9.3)](https://ci.appveyor.com/project/kensnyder/luxon-parser/branch/master)
-[![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/master/graph/badge.svg?v=0.9.3)](https://codecov.io/gh/kensnyder/luxon-parser)
-[![ISC License](https://img.shields.io/npm/l/luxon-parser.svg?v=0.9.3)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=0.9.4)](https://npmjs.com/package/luxon-parser)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/kensnyder/luxon-parser?branch=master&svg=true&v=0.9.4)](https://ci.appveyor.com/project/kensnyder/luxon-parser/branch/master)
+[![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/master/graph/badge.svg?v=0.9.4)](https://codecov.io/gh/kensnyder/luxon-parser)
+[![ISC License](https://img.shields.io/npm/l/luxon-parser.svg?v=0.9.4)](https://opensource.org/licenses/ISC)
 
 A comprehensive and extensible date parsing plugin for
 [Luxon](https://moment.github.io/luxon/docs/). It allows passing a wide variety
@@ -95,14 +95,14 @@ from\*() function:
 - Twitter
 
 `luxon-parser` relies on
-[any-date-format](https://www.npmjs.com/package/any-date-parser) which supports
+[any-date-parser](https://www.npmjs.com/package/any-date-parser) which supports
 even more formats. See the
 [exhaustive list](https://www.npmjs.com/package/any-date-parser#exhaustive-list-of-date-formats).
 
 ## Adding Custom Formats
 
 See
-[any-date-format's instructions](https://www.npmjs.com/package/any-date-parser#adding-custom-formats).
+[any-date-parser's instructions](https://www.npmjs.com/package/any-date-parser#adding-custom-formats).
 
 Example:
 
@@ -135,9 +135,9 @@ See the
 ## Sister Packages
 
 - Standalone Parser:
-  [any-date-format](http://npmjs.com/packages/any-date-format)
-- DayJS: [dayjs-parser](http://npmjs.com/package/dayjs-parse)
-- Moment: [moment-parseplus](http://npmjs.com/package/moment-parseplus)
+  [any-date-parser](http://npmjs.com/packages/any-date-parser)
+- DayJS Parser: [dayjs-parser](http://npmjs.com/package/dayjs-parser)
+- Moment Parser: [moment-parseplus](http://npmjs.com/package/moment-parseplus)
 
 ## Unit Testing
 

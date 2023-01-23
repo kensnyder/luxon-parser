@@ -22,19 +22,32 @@ fi
 
 if [ -n "$NODE_ICU_DATA" ]
 then
-  # make sure luxon is available
-  if ! npm list -g | grep -q 'luxon'
+  # check if luxon is installed globally
+  if [[ -z "$(npm list -g | grep -q 'luxon')" ]]
   then
-    echo "${GREEN}Attempting to globally install luxon with npm for unit tests...${WHITE}"
-    echo "npm install -g luxon@1"
-    npm install -g luxon@1
+    for version in {1..3}
+    do
+      echo "${GREEN}Attempting to globally install luxon${version} with npm for unit tests...${WHITE}"
+      echo "npm install -g luxon@${version}"
+      npm install -g "luxon@${version}"
+      echo ""
+      export NODE_PATH=$modulesPath
+      echo "${GREEN}Testing code that connects luxon v${version} to any-date-parser...${WHITE}"
+      # set timezone to UTC and run tests
+      TZ=UTC npx jest "$@"
+    done
     echo ""
+    echo "${GREEN}Uninstalling luxon globally...${WHITE}"
+    npm uninstall -g luxon
+    echo "Done"
+    echo ""
+  else
+    # make global luxon available to our specs
+    export NODE_PATH=$modulesPath
+    echo "${GREEN}Testing existing luxon global install with any-date-parser...${WHITE}"
+    # set timezone to UTC and run tests
+    TZ=UTC npx jest "$@"
   fi
-  # make global luxon available to our specs
-  export NODE_PATH=$modulesPath
-  echo "${GREEN}Testing code that connects luxon to any-date-parser...${WHITE}"
-  # set timezone to UTC and run tests
-  TZ=UTC npx jest "$@"
 else
   # Failed
   echo "${RED}We failed to find the full-icu package path."
