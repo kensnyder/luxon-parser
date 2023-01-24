@@ -83,6 +83,28 @@ describe('DateTime.fromAny()', () => {
 		const expected = DateTime.fromObject(object);
 		expect(actual.toString()).toBe(expected.toString());
 	});
+	it('should handle object with options', () => {
+		const object = {
+			year: 2021,
+			month: 4,
+			day: 17,
+			hour: 0,
+			minute: 0,
+			second: 0,
+		};
+		const optionsFiji = {
+			zone: 'Pacific/Fiji',
+		};
+		const optionsFaroe = {
+			zone: 'Atlantic/Faroe',
+		};
+		const actualFiji = DateTime.fromAny(object, optionsFiji);
+		const expectedFiji = DateTime.fromObject(object, optionsFiji);
+		expect(actualFiji.toString()).toBe(expectedFiji.toString());
+		const actualFaroe = DateTime.fromAny(object, optionsFaroe);
+		const expectedFaroe = DateTime.fromObject(object, optionsFaroe);
+		expect(actualFaroe.toString()).toBe(expectedFaroe.toString());
+	});
 	it('should default to invalid', () => {
 		const actual = DateTime.fromAny('my toys are sticky');
 		const expected = DateTime.invalid('Unable to parse my toys are sticky');

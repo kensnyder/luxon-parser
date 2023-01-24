@@ -49,7 +49,7 @@ DateTime.fromAny = function fromAny(date, options = {}) {
 	} else if (typeof date === 'number') {
 		return DateTime.fromMillis(date, options);
 	} else if (typeof date === 'object') {
-		return DateTime.fromObject(date);
+		return DateTime.fromObject(date, options);
 	}
 	// String
 	return DateTime.fromHuman(date, options);
