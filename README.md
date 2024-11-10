@@ -1,25 +1,26 @@
 # luxon-parser
 
-[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=0.9.4)](https://npmjs.com/package/luxon-parser)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/kensnyder/luxon-parser?branch=master&svg=true&v=0.9.4)](https://ci.appveyor.com/project/kensnyder/luxon-parser/branch/master)
-[![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/master/graph/badge.svg?v=0.9.4)](https://codecov.io/gh/kensnyder/luxon-parser)
-[![ISC License](https://img.shields.io/npm/l/luxon-parser.svg?v=0.9.4)](https://opensource.org/licenses/ISC)
+[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=1.0.0)](https://npmjs.com/package/luxon-parser)
+[![Build Status](https://github.com/kensnyder/luxon-parser/actions/workflows/workflow.yml/badge.svg?v=2.0.0-rc.1)](https://github.com/kensnyder/luxon-parser/actions)
+[![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/main/graph/badge.svg?v=2.0.0-rc.1)](https://codecov.io/gh/kensnyder/luxon-parser)
+[![Language: TypeScript](https://badgen.net/static/language/TS?v=1.0.0)](https://github.com/search?q=repo:kensnyder/luxon-parser++language:TypeScript&type=code)
+[![ISC License](https://badgen.net/github/license/kensnyder/luxon-parser?v=1.0.0)](https://opensource.org/licenses/ISC)
 
-A comprehensive and extensible date parsing plugin for
-[Luxon](https://moment.github.io/luxon/docs/). It allows passing a wide variety
-of date formats to new functions `DateTime.fromHuman()` and
-`DateTime.fromAny()`. Most locales are supported automatically.
+The most comprehensive and accurate date parser for Node and browsers. It uses
+`Intl` to provide parsing support for all installed locales. This plugin
+connects the capabilities of
+[any-date-parser](https://npmjs.com/package/dany-date-parser) to
+[luxon](https://moment.github.io/luxon/docs/).
 
-It uses [any-date-parser](https://npmjs.com/package/any-date-parser) for parsing
-date strings.
+It allows parsing every imaginable date format to a Luxon `DateTime` object.
+Most locales are supported automatically.
 
 ## Table of Contents
 
 - [Motivation](#motivation)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Recognized Formats](#recognized-formats)
-- [Adding Custom Formats](#adding-custom-formats)
+- [Recognized Formats](https://www.npmjs.com/package/any-date-parser#exhaustive-list-of-date-formats)
 - [Locale Support](#locale-support)
 - [Sister Packages](#sister-packages)
 - [Unit Testing](#unit-testing)
@@ -41,101 +42,57 @@ npm install luxon luxon-parser
 
 ## Usage
 
-```js
-const { DateTime } = require('luxon');
-require('luxon-parser');
+Option 1: import functions (recommended)
+
+```ts
+import { dateTimeFromHuman, dateTimeFromAny } from 'luxon-parser';
+
+const date1 = dateTimeFromHuman('March 5th, 2016 at 7:05pm');
+const date2 = dateTimeFromHuman('9 days ago');
+const date3 = dateTimeFromHuman('2016-03-05 23:59:59 CST');
+const date4 = dateTimeFromAny(new Date());
+```
+
+Option 2: use new functions on `DateTime` object
+
+```ts
+import { DateTime } from 'luxon';
+import 'luxon-parser';
 
 const date1 = DateTime.fromHuman('March 5th, 2016 at 7:05pm');
 const date2 = DateTime.fromHuman('9 days ago');
 const date3 = DateTime.fromHuman('2016-03-05 23:59:59 CST');
+const date4 = DateTime.fromAny(new Date());
 ```
 
-### DateTime.fromHuman(string, options)
+### dateTimeFromHuman(string, options) : DateTime
 
-Create a DateTime from any given String. Equivalent to auto choosing the right
-from\*() function:
+Create a `DateTime` from any given string.
 
-- DateTime.fromFormat()
-- DateTime.fromHTTP()
-- DateTime.fromISO()
-- DateTime.fromRFC2822()
-- DateTime.fromSQL()
-- DateTime.fromString()
+### dateTimeFromAny(any, options) : DateTime
 
-### DateTime.fromAny(any, options)
-
-Create a DateTime from any given type. Equivalent to auto choosing the right
-from\*() function:
-
-- DateTime.now()
-- DateTime.fromFormat()
-- DateTime.fromHTTP()
-- DateTime.fromISO()
-- DateTime.fromJSDate()
-- DateTime.fromMillis()
-- DateTime.fromObject()
-- DateTime.fromRFC2822()
-- DateTime.fromSQL()
-- DateTime.fromString()
-
-## Recognized Formats
-
-- 24 hour time
-- 12 hour time
-- timezone offsets
-- timezone abbreviations
-- year month day
-- year monthname day
-- month day year
-- monthname day year
-- day month year
-- day monthname year
-- +/-/ago periods
-- now/today/yesterday/tomorrow
-- Twitter
-
-`luxon-parser` relies on
-[any-date-parser](https://www.npmjs.com/package/any-date-parser) which supports
-even more formats. See the
-[exhaustive list](https://www.npmjs.com/package/any-date-parser#exhaustive-list-of-date-formats).
-
-## Adding Custom Formats
-
-See
-[any-date-parser's instructions](https://www.npmjs.com/package/any-date-parser#adding-custom-formats).
-
-Example:
-
-```js
-const parser = require('luxon-parser');
-
-parser.addFormat(
-	new parser.Format({
-		matcher: /^Q([1-4]) (\d{4})$/,
-		handler: function ([, quarter, year]) {
-			const monthByQuarter = { 1: 1, 2: 4, 3: 7, 4: 10 };
-			const month = monthByQuarter[quarter];
-			return { year, month };
-		},
-	})
-);
-```
+Create a `DateTime` from string, milliseconds, object, `DateTime`, or `Date`.
 
 ## Locale Support
 
 Locales are supported through a second argument:
 
-```js
-const date = DateTime.fromAny('15 septembre 2015', { locale: 'fr' });
+```ts
+import { dateTimeFromHuman, dateTimeFromAny } from 'luxon-parser';
+
+const date1 = dateTimeFromHuman('15 septembre 2015', { locale: 'fr' });
+const date2 = dateTimeFromAny('15 septembre 2015', { locale: 'fr' });
 ```
 
 See the
 [Luxon docs on locales](https://moment.github.io/luxon/docs/manual/intl.html)
+and the example non-English dates that
+[any-date-parser](https://www.npmjs.com/package/any-date-parser#locale-support)
+can parse.
 
 ## Sister Packages
 
-- Standalone Parser:
-  [any-date-parser](http://npmjs.com/packages/any-date-parser)
+- Standalone Parser: [any-date-parser](http://npmjs.com/package/any-date-parser)
 - DayJS Parser: [dayjs-parser](http://npmjs.com/package/dayjs-parser)
 - Moment Parser: [moment-parseplus](http://npmjs.com/package/moment-parseplus)
 
@@ -147,7 +104,8 @@ See the
 - To check coverage, run `npm run coverage`
 
 Unit tests require a global install of `full-icu` and `luxon`. The test runner
-will attempt to install these if absent.
+will attempt to install these if absent. It tests compatibility with Luxon
+version 1.x, 2.x and 3.x
 
 ## Contributing
 

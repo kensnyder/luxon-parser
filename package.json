@@ -1,45 +1,73 @@
 {
-	"name": "luxon-parser",
-	"version": "0.9.4",
-	"description": "Add DateTime.fromHuman() and DateTime.fromAny() functions to Luxon that can parse a wide range of date formats including human-input dates",
-	"keywords": [
-		"luxon",
-		"date",
-		"datetime",
-		"parse",
-		"parser",
-		"date parser",
-		"parse date",
-		"human"
-	],
-	"main": "index.js",
-	"scripts": {
-		"test": "sh ./test/run-jest.sh",
-		"watch": "sh ./test/run-jest.sh --watch",
-		"coverage": "sh ./test/run-jest.sh --coverage"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/kensnyder/luxon-parser.git"
-	},
-	"author": {
-		"name": "Ken Snyder",
-		"email": "kendsnyder@gmail.com"
-	},
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/kensnyder/luxon-parser/issues"
-	},
-	"homepage": "https://github.com/kensnyder/luxon-parser#readme",
-	"dependencies": {
-		"any-date-parser": "1.5.3"
-	},
-	"peerDependencies": {
-		"luxon": ">=1.28.0"
-	},
-	"devDependencies": {
-		"eslint": "8.32.0",
-		"jest": "29.3.1",
-		"prettier": "2.8.3"
-	}
+  "name": "luxon-parser",
+  "version": "1.0.0",
+  "description": "Add DateTime.fromHuman() and DateTime.fromAny() functions to Luxon that can parse a wide range of date formats including human-input dates",
+  "keywords": [
+    "luxon",
+    "date",
+    "datetime",
+    "parse",
+    "parser",
+    "date parser",
+    "parse date",
+    "human"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "scripts": {
+    "test": "./scripts/test.sh run",
+    "test-watch": "./scripts/test.sh",
+    "build": "npm run build:clean && npm run build:dts && npm run build:esm && npm run build:cjs",
+    "build:clean": "rimraf dist/ && mkdir dist",
+    "build:dts": "yes | npx dts-bundle-generator -o dist/index.d.ts src/luxon-parser.ts",
+    "build:esm": "yes | npx esbuild src/luxon-parser.ts --bundle --external:any-date-parser --external:luxon --platform=node --format=esm --outfile=dist/index.mjs",
+    "build:cjs": "yes | npx esbuild src/luxon-parser.ts --bundle --external:any-date-parser --external:luxon --platform=node --format=cjs --outfile=dist/index.cjs",
+    "coverage": "./scripts/test.sh run --coverage",
+    "view-coverage": "open ./coverage/lcov-report/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kensnyder/luxon-parser.git"
+  },
+  "author": {
+    "name": "Ken Snyder",
+    "email": "kendsnyder@gmail.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kensnyder/luxon-parser/issues"
+  },
+  "homepage": "https://github.com/kensnyder/luxon-parser#readme",
+  "dependencies": {
+    "any-date-parser": "2.0.0"
+  },
+  "peerDependencies": {
+    "luxon": ">=1.28.0"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.4.2",
+    "@types/node": "22.9.0",
+    "@vitest/coverage-v8": "2.1.4",
+    "dayjs": "1.11.13",
+    "eslint": "8.16.0",
+    "prettier": "3.3.3",
+    "prettier-plugin-organize-imports": "4.1.0",
+    "rimraf": "6.0.1",
+    "typescript": "5.6.3",
+    "vitest": "2.1.4"
+  }
 }
