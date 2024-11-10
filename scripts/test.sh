@@ -34,7 +34,7 @@ then
       export NODE_PATH=$modulesPath
       echo "${GREEN}Testing code that connects luxon v${version} to any-date-parser...${WHITE}"
       # set timezone to UTC and run tests
-      TZ=UTC npx jest "$@"
+      TZ=UTC npx vitest "$@"
     done
     echo ""
     echo "${GREEN}Uninstalling luxon globally...${WHITE}"
@@ -46,7 +46,7 @@ then
     export NODE_PATH=$modulesPath
     echo "${GREEN}Testing existing luxon global install with any-date-parser...${WHITE}"
     # set timezone to UTC and run tests
-    TZ=UTC npx jest "$@"
+    TZ=UTC npx vitest "$@"
   fi
 else
   # Failed
