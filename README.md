@@ -1,10 +1,10 @@
 # luxon-parser
 
-[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=1.0.2)](https://npmjs.com/package/luxon-parser)
+[![NPM Link](https://img.shields.io/npm/v/luxon-parser?v=1.0.3)](https://npmjs.com/package/luxon-parser)
 [![Build Status](https://github.com/kensnyder/luxon-parser/actions/workflows/workflow.yml/badge.svg?v=2.0.0-rc.1)](https://github.com/kensnyder/luxon-parser/actions)
 [![Code Coverage](https://codecov.io/gh/kensnyder/luxon-parser/branch/main/graph/badge.svg?v=2.0.0-rc.1)](https://codecov.io/gh/kensnyder/luxon-parser)
-[![Language: TypeScript](https://badgen.net/static/language/TS?v=1.0.2)](https://github.com/search?q=repo:kensnyder/luxon-parser++language:TypeScript&type=code)
-[![ISC License](https://badgen.net/github/license/kensnyder/luxon-parser?v=1.0.2)](https://opensource.org/licenses/ISC)
+[![Language: TypeScript](https://badgen.net/static/language/TS?v=1.0.3)](https://github.com/search?q=repo:kensnyder/luxon-parser++language:TypeScript&type=code)
+[![ISC License](https://badgen.net/github/license/kensnyder/luxon-parser?v=1.0.3)](https://opensource.org/licenses/ISC)
 
 The most comprehensive and accurate date parser for Node and browsers. It uses
 `Intl` to provide parsing support for all installed locales. This plugin

@@ -1,6 +1,6 @@
 {
   "name": "luxon-parser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Add DateTime.fromHuman() and DateTime.fromAny() functions to Luxon that can parse a wide range of date formats including human-input dates",
   "keywords": [
     "luxon",
@@ -53,14 +53,14 @@
   },
   "homepage": "https://github.com/kensnyder/luxon-parser#readme",
   "dependencies": {
-    "any-date-parser": "2.2.1"
+    "any-date-parser": "2.2.2"
   },
   "peerDependencies": {
     "luxon": ">=1.28.0"
   },
   "devDependencies": {
     "@types/luxon": "^3.6.2",
-    "@types/node": "24.0.1",
+    "@types/node": "24.0.3",
     "@vitest/coverage-v8": "3.2.3",
     "dayjs": "1.11.13",
     "eslint": "8.16.0",
